@@ -184,3 +184,7 @@
 - [x] ai.js: store description, BUY token variant format, new examples — 2026-06-11
 - [x] knowledge.md: RECOMMENDED section — best picks per category — 2026-06-11
 - [x] Purchase flow: multi-item cart (items[], matchAll BUY tokens, subtotal + delivery + total) — 2026-06-11
+- [x] Purchase flow: remove region picker — Claude Haiku detects region from address text — 2026-06-11
+- [x] Purchase flow: post-order follow-up ("Anything else?") — 2026-06-11
+- [x] savedAddresses: address saved after payment, pre-filled on repeat orders, shown in confirm msg — 2026-06-11
+- [x] Telegram alerts: delivery address included in conversation/photo/rate-limit summaries — 2026-06-11

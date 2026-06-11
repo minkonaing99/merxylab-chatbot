@@ -124,6 +124,15 @@ No automated test suite in MVP. Manual testing sequence:
 
 ## Changelog
 
+### [0.4.3] — 2026-06-11
+
+#### Added
+
+- savedAddresses Map (psid -> {address, regionName, deliveryFee}) — persists address within session
+- Address auto-saved when payment method confirmed
+- New BUY flow pre-fills saved address — shown in confirm message, skips address step on repeat orders
+- Telegram alerts (conversation, photo, rate limit) now include address line if collected
+
 ### [0.4.2] — 2026-06-11
 
 #### Changed
