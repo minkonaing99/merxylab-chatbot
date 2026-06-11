@@ -11,7 +11,7 @@ async function subscribePageToApp() {
 
   const url = new URL(`https://graph.facebook.com/v21.0/${pageId}/subscribed_apps`);
   url.searchParams.set('access_token', token);
-  url.searchParams.set('subscribed_fields', 'messages,messaging_postbacks');
+  url.searchParams.set('subscribed_fields', 'messages,messaging_postbacks,message_echoes');
 
   const response = await fetch(url.toString(), { method: 'POST' });
   const data = await response.json();

@@ -34,11 +34,15 @@ All required. App fails at startup if any missing.
 
 | Key                 | Description                 | Where to get                            |
 | ------------------- | --------------------------- | --------------------------------------- |
-| `PAGE_ACCESS_TOKEN` | Facebook Page access token  | Meta App > Messenger > Token Generation |
-| `APP_SECRET`        | Meta app secret             | Meta App > Settings > Basic             |
-| `VERIFY_TOKEN`      | Your invented secret string | Make it up (e.g. `mybot_verify_2024`)   |
-| `ANTHROPIC_API_KEY` | Anthropic API key           | console.anthropic.com                   |
-| `PORT`              | Server port (optional)      | Default: 3000                           |
+| `PAGE_ACCESS_TOKEN`        | Facebook Page access token  | Meta App > Messenger > Token Generation |
+| `APP_SECRET`               | Meta app secret             | Meta App > Settings > Basic             |
+| `VERIFY_TOKEN`             | Your invented secret string | Make it up (e.g. `mybot_verify_2024`)   |
+| `ANTHROPIC_API_KEY`        | Anthropic API key           | console.anthropic.com                   |
+| `TELEGRAM_BOT_TOKEN`       | Telegram bot token          | Telegram > @BotFather > /newbot         |
+| `TELEGRAM_CHAT_ID`         | Telegram channel chat ID    | getUpdates API (negative number)        |
+| `UPSTASH_REDIS_REST_URL`   | Upstash Redis REST URL      | upstash.com > DB > Details              |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis REST token    | upstash.com > DB > Details              |
+| `PORT`                     | Server port (optional)      | Default: 3000                           |
 
 ## How to Run Locally
 
@@ -119,6 +123,30 @@ No automated test suite in MVP. Manual testing sequence:
 ---
 
 ## Changelog
+
+### [0.3.0] — 2026-06-11
+
+#### Added
+
+- Upstash Redis persistent cooldown state (25h TTL per PSID)
+- `redis.js` — cooldown helpers: setCooldown, isInCooldown, clearCooldown, setNotified, hasBeenNotified
+- `POST /telegram` endpoint — receives admin `/on {psid}` re-enable commands
+- `telegram-setup.js` — one-time Telegram webhook registration script
+- Admin re-enable: summaries include `To re-enable bot: /on {psid}` command
+- Cooldown triggers: inactivity timeout, admin takeover, photo received, rate limit
+
+#### Changed
+
+- `adminTakeover` in-memory Set replaced by Redis cooldown (survives restarts)
+- All summary types (conversation, photo, rate limit) now set 25h Redis cooldown
+- Rate limit lowered: 25 → 20 messages per customer
+- Repeat detection: skip for short responses (<=10 chars), yes/no patterns, emails (@)
+- Purchase flow confirmation: repeat detection skipped when flow active
+
+#### Fixed
+
+- `yes`/`no` triggering duplicate detection during purchase confirmation
+- Email address triggering duplicate detection during purchase flow
 
 ### [0.2.3] — 2026-06-11
 

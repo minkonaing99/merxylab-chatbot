@@ -10,17 +10,22 @@
 | HTTP client | Node 20 native fetch | Outbound calls to Graph API; no extra package needed |
 | Config | dotenv | Load secrets from .env at startup |
 | Hosting | Render free tier | Free HTTPS URL; auto-deploys from GitHub |
+| State | Upstash Redis (REST) | Persistent cooldown state survives server restarts; free tier |
+| Notifications | Telegram Bot API | Admin channel summaries + re-enable commands |
 
 ## Folder Structure
 
 ```
 merxylab-chatbot/
-├── server.js          # Express app, GET + POST /webhook, signature check
-├── ai.js              # Loads knowledge.md, calls Claude Haiku 4.5
-├── subscribe.js       # One-time Page subscription helper script
-├── knowledge.md       # Business facts (prices, hours, policies) — owner edits this
-├── .env               # Secrets (never committed)
-├── .env.example       # Safe template committed to repo
+├── server.js             # Express app, GET + POST /webhook, POST /telegram
+├── ai.js                 # Loads knowledge.md, calls Claude Haiku 4.5
+├── logger.js             # Conversation summaries, Telegram alerts, photo/rate alerts
+├── redis.js              # Upstash Redis client, cooldown helpers
+├── subscribe.js          # One-time Page subscription helper script
+├── telegram-setup.js     # One-time Telegram webhook registration script
+├── knowledge.md          # Business facts (prices, hours, policies) — owner edits this
+├── .env                  # Secrets (never committed)
+├── .env.example          # Safe template committed to repo
 ├── .gitignore
 ├── package.json
 ├── CLAUDE.md
@@ -84,6 +89,9 @@ Messenger Customer sees reply
 | Meta Messenger (receive) | HMAC-SHA256 APP_SECRET signature | Webhook event JSON |
 | Meta Graph API (send) | Authorization: Bearer PAGE_ACCESS_TOKEN header | Send API JSON body |
 | Anthropic API | ANTHROPIC_API_KEY header | Messages API (system + user turn) |
+| Upstash Redis | UPSTASH_REDIS_REST_TOKEN header | REST API — GET/SET/DEL cooldown keys |
+| Telegram Bot API (send) | TELEGRAM_BOT_TOKEN in URL | sendMessage to channel |
+| Telegram Bot API (receive) | POST /telegram webhook + secret_token | Admin /on {psid} commands |
 
 ## Scalability Plan
 
@@ -123,6 +131,18 @@ If volume grows:
 **Decision:** `res.sendStatus(200)` fires before any async work. AI + Send API calls happen after.
 **Consequences:** If AI call fails, customer gets no reply and no error is surfaced. Acceptable in MVP; add retry/fallback in v2.
 
+### [2026-06-11] Upstash Redis for persistent cooldown state
+**Status:** Accepted
+**Context:** Render free tier restarts frequently. In-memory adminTakeover Set resets on restart, causing bot to re-engage customers waiting for admin.
+**Decision:** Upstash Redis REST API via `@upstash/redis`. Cooldown keys with 25h TTL. No Redis server to manage — serverless REST.
+**Consequences:** Requires UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN. Free tier (10k commands/day) sufficient for this volume.
+
+### [2026-06-11] Telegram bot for admin notifications + commands
+**Status:** Accepted
+**Context:** Admin needs instant summary when conversation ends, photo received, or rate limit hit. Also needs ability to re-enable bot for a customer.
+**Decision:** Telegram Bot API — summaries pushed to private channel. Admin DMs `/on {psid}` to re-enable. POST /telegram webhook receives commands.
+**Consequences:** Requires TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID. One-time webhook registration via telegram-setup.js.
+
 ### [2026-06-10] knowledge.md as flat file (not database)
 **Status:** Accepted
 **Context:** Business facts rarely change. No query needs. Database adds ops overhead.
@@ -153,6 +173,10 @@ All secrets via `.env` (local) or Render env vars (production):
 - `APP_SECRET`
 - `VERIFY_TOKEN`
 - `ANTHROPIC_API_KEY`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
 
 `.env` in `.gitignore`. `.env.example` committed with no values.
 

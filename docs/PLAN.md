@@ -118,14 +118,17 @@
 
 ## In Progress
 
+- [ ] Change INACTIVITY_MS back to 30 min before deploy
+- [ ] Add all new env vars to Render dashboard
 - [ ] Deploy to Render
 - [ ] Run subscribe.js on prod
+- [ ] Run telegram-setup.js with Render URL
 - [ ] Update Meta webhook URL to Render URL (browser)
 - [ ] Submit App Review for public access (browser)
 
 ## Backlog
 
-- [ ] Persistent state (message counts, takeover flags) — needs Redis or DB
+- [ ] Purchase flow: email validation strictness (currently just checks for @)
 
 ## Done
 
@@ -160,6 +163,16 @@
 - [x] Security: message text length cap 500 chars before AI — 2026-06-11
 - [x] Security: daily state reset (memory leak fix) — 2026-06-11
 - [x] Bug: greetingReply female voice (ကျွန်မတို့) — 2026-06-11
+- [x] Conversation logging: logger.js, fullTranscript, inactivityTimers — 2026-06-11
+- [x] Telegram channel summaries (conversation end, photo, rate limit) — 2026-06-11
+- [x] Redis persistent cooldown (25h TTL, survives restarts) — 2026-06-11
+- [x] POST /telegram endpoint + admin /on {psid} re-enable command — 2026-06-11
+- [x] telegram-setup.js webhook registration script — 2026-06-11
+- [x] Purchase flow: confirm → Gmail → payment card — 2026-06-11
+- [x] Repeated question detection (exact match, skip short/email/purchase flow) — 2026-06-11
+- [x] Rate limit alert to Telegram with summary — 2026-06-11
+- [x] Photo alert to Telegram with conversation context — 2026-06-11
+- [x] subscribe.js: added message_echoes field — 2026-06-11
 - [x] ngrok local testing setup — 2026-06-10
 - [x] Meta webhook verified (green checkmark) — 2026-06-10
 - [x] Page subscribed to app (messages + messaging_postbacks) — 2026-06-10
