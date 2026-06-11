@@ -124,6 +124,22 @@ No automated test suite in MVP. Manual testing sequence:
 
 ## Changelog
 
+### [0.4.1] — 2026-06-11
+
+#### Added
+
+- knowledge.md: RECOMMENDED section — best picks per category (keyboards, mice, headsets, mics, speakers)
+- Cart flow: multi-item purchase support — AI emits multiple [BUY:] tokens, bot compiles into cart
+- Cart confirm message: lists all items with subtotal
+- Payment card: lists all items, subtotal + delivery fee + grand total
+- Adding BUY token while in awaiting_confirm appends to existing cart
+
+#### Changed
+
+- purchaseFlow shape: `{product, variant, price}` → `{items: [{product, variant, price}]}`
+- BUY token interception: `match` → `matchAll` — captures all tokens in one AI reply
+- ai.js: BUY token instructions updated — multi-item example added
+
 ### [0.4.0] — 2026-06-11
 
 #### Changed

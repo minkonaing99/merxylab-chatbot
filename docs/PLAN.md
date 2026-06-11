@@ -182,3 +182,5 @@
 - [x] Payment card: product + delivery fee + total — 2026-06-11
 - [x] knowledge.md compressed to pipe-delimited format (~45% token reduction) — 2026-06-11
 - [x] ai.js: store description, BUY token variant format, new examples — 2026-06-11
+- [x] knowledge.md: RECOMMENDED section — best picks per category — 2026-06-11
+- [x] Purchase flow: multi-item cart (items[], matchAll BUY tokens, subtotal + delivery + total) — 2026-06-11
