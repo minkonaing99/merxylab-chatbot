@@ -13,10 +13,9 @@ COD: pay driver on delivery
 
 ## DELIVERY (BeeExpress from Mandalay, 1-5 days, same-day Mandalay)
 
-Mandalay city: 3,000 | Mandalay near: 4,500 | Mandalay far: 5,500
-Yangon city: 5,000 | Yangon outskirts: 5,500 | Naypyidaw: 5,000
-Bago: 5,750 | Magway: 5,750 | Ayeyarwady/Chin: 6,250
-Mon State: 6,250 | Shan State: 6,500 | Kachin: 8,500 | Rakhine: 7,000 | Tanintharyi: 8,500
+Mandalay: 3,000 | Yangon: 5,000 | Naypyidaw: 5,000
+Bago: 5,750 | Magway: 5,750 | Ayeyarwady: 6,250 | Chin: 6,250 | Mon: 6,250
+Shan: 6,500 | Rakhine: 7,000 | Kachin: 8,500 | Tanintharyi: 8,500
 
 ## WARRANTY
 

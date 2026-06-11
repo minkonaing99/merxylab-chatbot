@@ -120,4 +120,21 @@ async function generateReply(
   }
 }
 
-module.exports = { generateReply };
+async function detectRegion(address, regionNames) {
+  try {
+    const response = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 20,
+      messages: [{
+        role: 'user',
+        content: `Delivery address: "${address}"\nWhich region from this list does the address belong to? Reply with ONLY the exact region name, or UNKNOWN if unclear.\nRegions: ${regionNames.join(', ')}`
+      }]
+    });
+    const result = response.content[0].text.trim();
+    return result === 'UNKNOWN' ? null : result;
+  } catch {
+    return null;
+  }
+}
+
+module.exports = { generateReply, detectRegion };

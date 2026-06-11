@@ -124,6 +124,17 @@ No automated test suite in MVP. Manual testing sequence:
 
 ## Changelog
 
+### [0.4.2] — 2026-06-11
+
+#### Changed
+
+- Purchase flow: removed manual region picker (14-option list) — bot now auto-extracts city/state from address text
+- Address step: detects region via keyword matching → shows delivery fee immediately → asks payment method
+- If city not found in address: asks customer to include city/state, retries same step
+- After payment card: bot asks "Is there anything else you would like to order?"
+- knowledge.md: delivery fee table simplified to one entry per region (no city vs outskirts split)
+- DELIVERY_REGIONS: removed numbered keys and pattern field — region detection delegated to Claude Haiku via `detectRegion(address, regionNames)` in ai.js
+
 ### [0.4.1] — 2026-06-11
 
 #### Added
