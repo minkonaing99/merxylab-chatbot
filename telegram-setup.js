@@ -10,10 +10,16 @@ async function registerTelegramWebhook() {
   }
 
   const webhookUrl = `${baseUrl}/telegram`;
+  const secret = process.env.APP_SECRET;
+  if (!secret) {
+    console.error('Missing APP_SECRET in .env');
+    process.exit(1);
+  }
+
   const res = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: webhookUrl })
+    body: JSON.stringify({ url: webhookUrl, secret_token: secret })
   });
   const data = await res.json();
 
