@@ -132,6 +132,7 @@ No automated test suite in MVP. Manual testing sequence:
 - knowledge.md: 100+ SKUs with prices in Ks, MerxyLab branding
 - knowledge.md: policies — KBZ Pay / AYA Pay / UAB Pay / COD, 1-5 day delivery, same-day Mandalay, 6-month warranty, exchange only within 7 days
 - knowledge.md: BeeExpress delivery fee table by region (14 regions, 3,000–10,000 Ks)
+- knowledge.md: compressed to pipe-delimited format — 401 lines → 171 lines, ~45% token reduction
 - Purchase flow: 2-step → 4-step (confirm → address → region picker → payment method)
 - Region picker: numbered list 1-14, bot looks up BeeExpress fee per region
 - Payment card: product price + delivery fee + total shown; per-method account details

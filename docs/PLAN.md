@@ -180,4 +180,5 @@
 - [x] Payment methods: KBZ Pay, AYA Pay, UAB Pay, COD — 2026-06-11
 - [x] BeeExpress delivery fee table (14 regions) in knowledge.md — 2026-06-11
 - [x] Payment card: product + delivery fee + total — 2026-06-11
+- [x] knowledge.md compressed to pipe-delimited format (~45% token reduction) — 2026-06-11
 - [x] ai.js: store description, BUY token variant format, new examples — 2026-06-11
