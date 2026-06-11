@@ -366,9 +366,28 @@ UAB Pay: 09787753307 — Min Ko Naing
 COD: Pay driver on delivery
 
 ### Delivery
-- Delivery fee varies by location (ask admin for exact fee)
+Courier: BeeExpress (from Mandalay)
 - 1-5 business days
 - Same-day delivery available in Mandalay
+
+Delivery fees by region:
+
+| Region | Fee |
+|--------|-----|
+| မန္တလေးတိုင်း — မြို့တွင်း (Mandalay city) | 3,000 Ks |
+| မန္တလေးတိုင်း — နီးစပ်ရာ (near areas) | 4,000 - 4,500 Ks |
+| မန္တလေးတိုင်း — ဝေးသောနေရာ (far areas) | 5,000 - 6,000 Ks |
+| ရန်ကုန်တိုင်း — မြို့တွင်း (Yangon city) | 5,000 Ks |
+| ရန်ကုန်တိုင်း — ပြင်ပ (Yangon outskirts) | 5,500 Ks |
+| နေပြည်တော် (Naypyidaw) | 5,000 Ks |
+| ပဲခူးတိုင်း (Bago Region) | 5,500 - 6,000 Ks |
+| မကွေးတိုင်း (Magway Region) | 5,000 - 6,500 Ks |
+| ချောင်တိုင်း / ဧရာဝတီ (Ayeyarwady) | 6,000 - 6,500 Ks |
+| မွန်ပြည်နယ် (Mon State) | 6,000 - 6,500 Ks |
+| ရှမ်းပြည်နယ် (Shan State) | 6,000 - 7,000 Ks |
+| ကချင်ပြည်နယ် (Kachin State) | 8,500 Ks |
+| ရခိုင်ပြည်နယ် (Rakhine State) | 7,000 Ks |
+| တနသ္သာရီတိုင်း (Tanintharyi) | 7,000 - 10,000 Ks |
 
 ### Warranty
 - Minimum 6 months warranty on all products
