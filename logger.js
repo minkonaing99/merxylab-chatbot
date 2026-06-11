@@ -3,7 +3,7 @@ const Anthropic = require('@anthropic-ai/sdk');
 const { setCooldown } = require('./redis');
 
 const client = new Anthropic();
-const INACTIVITY_MS = 1 * 60 * 1000; // TESTING: 1 min — change back to 30 * 60 * 1000 before deploy
+const INACTIVITY_MS = 30 * 60 * 1000;
 const SEP = '───────────────────────';
 
 async function fetchCustomerName(psid) {
