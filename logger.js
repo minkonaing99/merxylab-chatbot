@@ -60,7 +60,7 @@ async function sendTelegramWithRetry(text) {
   }
 }
 
-async function finalizeConversation(psid, transcript, customerName, trigger) {
+async function finalizeConversation(psid, transcript, customerName, trigger, savedAddress) {
   if (transcript.length === 0) return;
 
   const now = new Date();
@@ -78,6 +78,10 @@ async function finalizeConversation(psid, transcript, customerName, trigger) {
     summaryLines = 'Asked: Unable to generate summary.\nProducts: Unknown\nResolved: Unknown\nAction needed: Check conversation manually';
   }
 
+  const addressLine = savedAddress
+    ? `Address: ${savedAddress.address} (${savedAddress.regionName} — ${savedAddress.deliveryFee.toLocaleString()} Ks)`
+    : null;
+
   const message = [
     `Conversation Summary (${dateStr})`,
     SEP,
@@ -86,6 +90,7 @@ async function finalizeConversation(psid, transcript, customerName, trigger) {
     SEP,
     summaryLines,
     SEP,
+    ...(addressLine ? [addressLine] : []),
     `To re-enable bot: /on ${psid}`
   ].join('\n');
 
@@ -96,7 +101,7 @@ async function finalizeConversation(psid, transcript, customerName, trigger) {
   ]);
 }
 
-async function sendPhotoAlert(psid, customerName, transcript) {
+async function sendPhotoAlert(psid, customerName, transcript, savedAddress) {
   const now = new Date();
   const dateStr = now.toISOString().replace('T', ' ').slice(0, 16);
 
@@ -110,6 +115,10 @@ async function sendPhotoAlert(psid, customerName, transcript) {
     }
   }
 
+  const addressLine = savedAddress
+    ? `Address: ${savedAddress.address} (${savedAddress.regionName} — ${savedAddress.deliveryFee.toLocaleString()} Ks)`
+    : null;
+
   const message = [
     `Photo Received (${dateStr})`,
     SEP,
@@ -117,6 +126,7 @@ async function sendPhotoAlert(psid, customerName, transcript) {
     SEP,
     context,
     SEP,
+    ...(addressLine ? [addressLine] : []),
     `Action needed: Review photo in Facebook Messenger`,
     `To re-enable bot: /on ${psid}`
   ].join('\n');
@@ -128,7 +138,7 @@ async function sendPhotoAlert(psid, customerName, transcript) {
   ]);
 }
 
-async function sendRateLimitAlert(psid, customerName, transcript) {
+async function sendRateLimitAlert(psid, customerName, transcript, savedAddress) {
   const now = new Date();
   const dateStr = now.toISOString().replace('T', ' ').slice(0, 16);
   const msgCount = transcript.filter(t => t.role === 'customer').length;
@@ -143,6 +153,10 @@ async function sendRateLimitAlert(psid, customerName, transcript) {
     }
   }
 
+  const addressLine = savedAddress
+    ? `Address: ${savedAddress.address} (${savedAddress.regionName} — ${savedAddress.deliveryFee.toLocaleString()} Ks)`
+    : null;
+
   const message = [
     `Rate Limit Reached (${dateStr})`,
     SEP,
@@ -151,6 +165,7 @@ async function sendRateLimitAlert(psid, customerName, transcript) {
     SEP,
     context,
     SEP,
+    ...(addressLine ? [addressLine] : []),
     `Action needed: Customer needs human support`,
     `To re-enable bot: /on ${psid}`
   ].join('\n');
