@@ -173,6 +173,10 @@
 - [x] Rate limit alert to Telegram with summary — 2026-06-11
 - [x] Photo alert to Telegram with conversation context — 2026-06-11
 - [x] subscribe.js: added message_echoes field — 2026-06-11
+- [x] Security: POST /telegram secret_token auth (APP_SECRET) — 2026-06-11
+- [x] Security: PSID format validation before Redis ops — 2026-06-11
+- [x] Security: PSID masked in logs — 2026-06-11
+- [x] Security: Redis failure explicit error logging — 2026-06-11
 - [x] ngrok local testing setup — 2026-06-10
 - [x] Meta webhook verified (green checkmark) — 2026-06-10
 - [x] Page subscribed to app (messages + messaging_postbacks) — 2026-06-10

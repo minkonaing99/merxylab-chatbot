@@ -185,8 +185,10 @@ All secrets via `.env` (local) or Render env vars (production):
 | Surface | Risk | Mitigation |
 |---------|------|------------|
 | POST /webhook | Spoofed payloads | HMAC-SHA256 signature check |
+| POST /telegram | Unauthorized /on commands | X-Telegram-Bot-Api-Secret-Token header validated against APP_SECRET; 403 on mismatch |
 | Prompt injection via user message | User tricks AI into ignoring system prompt | System prompt hardened; knowledge is read-only context |
-| API key exposure | Key in logs or git | Never log tokens; .env gitignored |
+| API key exposure | Key in logs or git | Never log tokens; .env gitignored; PSIDs masked in logs |
+| Redis failure | Cooldown bypassed silently | Error logged; bot proceeds — acceptable degradation |
 | Render free tier cold start | Slow first response after idle | Acceptable; warm-up ping optional |
 
 ### Dependency Audit

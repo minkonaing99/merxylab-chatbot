@@ -124,6 +124,16 @@ No automated test suite in MVP. Manual testing sequence:
 
 ## Changelog
 
+### [0.3.1] — 2026-06-11
+
+#### Security
+
+- POST /telegram: validates X-Telegram-Bot-Api-Secret-Token header (APP_SECRET) — rejects unauthorized requests with 403
+- telegram-setup.js: registers webhook with secret_token so Telegram signs all updates
+- PSID validated as 10-20 digit number before Redis clearCooldown call
+- Redis failure now logs explicit error instead of silently bypassing cooldown
+- PSID masked in all server logs (shows last 4 digits only)
+
 ### [0.3.0] — 2026-06-11
 
 #### Added
