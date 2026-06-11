@@ -118,17 +118,11 @@
 
 ## In Progress
 
-- [ ] Change INACTIVITY_MS back to 30 min before deploy
-- [ ] Add all new env vars to Render dashboard
-- [ ] Deploy to Render
-- [ ] Run subscribe.js on prod
-- [ ] Run telegram-setup.js with Render URL
-- [ ] Update Meta webhook URL to Render URL (browser)
-- [ ] Submit App Review for public access (browser)
+- [ ] Submit App Review for public access (pages_messaging permission)
 
 ## Backlog
 
-- [ ] Purchase flow: email validation strictness (currently just checks for @)
+- [ ] Delivery fee lookup (currently tells customer to ask admin — could add region table)
 
 ## Done
 
@@ -180,3 +174,8 @@
 - [x] ngrok local testing setup — 2026-06-10
 - [x] Meta webhook verified (green checkmark) — 2026-06-10
 - [x] Page subscribed to app (messages + messaging_postbacks) — 2026-06-10
+- [x] Deployed to Hostinger (adminchatbot.merxylab.com) — 2026-06-11
+- [x] Pivot to PC accessories — knowledge.md with 100+ SKUs — 2026-06-11
+- [x] Purchase flow: 3-step (confirm → address → payment method) — 2026-06-11
+- [x] Payment methods: KBZ Pay, AYA Pay, UAB Pay, COD — 2026-06-11
+- [x] ai.js: store description, BUY token variant format, new examples — 2026-06-11

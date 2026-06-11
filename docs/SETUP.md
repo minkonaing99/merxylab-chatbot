@@ -124,6 +124,19 @@ No automated test suite in MVP. Manual testing sequence:
 
 ## Changelog
 
+### [0.4.0] — 2026-06-11
+
+#### Changed
+
+- Business pivot: digital subscriptions → PC gaming accessories (keyboards, mice, headsets, switches, keycaps, accessories)
+- knowledge.md: 100+ SKUs with prices in Ks, MerxyLab branding
+- knowledge.md: policies — KBZ Pay / AYA Pay / UAB Pay / COD, 1-5 day delivery, same-day Mandalay, 6-month warranty, exchange only within 7 days
+- Purchase flow: 2-step (confirm → email) → 3-step (confirm → address → payment method)
+- BUY token: `[BUY: product | duration | price]` → `[BUY: product | variant | price]`
+- Payment card: per-method output (KBZ/AYA/UAB: 09787753307 / Min Ko Naing; COD: pay driver)
+- ai.js: store description, BUY token examples, few-shot examples updated for PC accessories
+- Deployed to Hostinger Business at adminchatbot.merxylab.com
+
 ### [0.3.1] — 2026-06-11
 
 #### Security
