@@ -176,6 +176,8 @@
 - [x] Page subscribed to app (messages + messaging_postbacks) — 2026-06-10
 - [x] Deployed to Hostinger (adminchatbot.merxylab.com) — 2026-06-11
 - [x] Pivot to PC accessories — knowledge.md with 100+ SKUs — 2026-06-11
-- [x] Purchase flow: 3-step (confirm → address → payment method) — 2026-06-11
+- [x] Purchase flow: 4-step (confirm → address → region picker → payment method) — 2026-06-11
 - [x] Payment methods: KBZ Pay, AYA Pay, UAB Pay, COD — 2026-06-11
+- [x] BeeExpress delivery fee table (14 regions) in knowledge.md — 2026-06-11
+- [x] Payment card: product + delivery fee + total — 2026-06-11
 - [x] ai.js: store description, BUY token variant format, new examples — 2026-06-11

@@ -131,9 +131,11 @@ No automated test suite in MVP. Manual testing sequence:
 - Business pivot: digital subscriptions → PC gaming accessories (keyboards, mice, headsets, switches, keycaps, accessories)
 - knowledge.md: 100+ SKUs with prices in Ks, MerxyLab branding
 - knowledge.md: policies — KBZ Pay / AYA Pay / UAB Pay / COD, 1-5 day delivery, same-day Mandalay, 6-month warranty, exchange only within 7 days
-- Purchase flow: 2-step (confirm → email) → 3-step (confirm → address → payment method)
+- knowledge.md: BeeExpress delivery fee table by region (14 regions, 3,000–10,000 Ks)
+- Purchase flow: 2-step → 4-step (confirm → address → region picker → payment method)
+- Region picker: numbered list 1-14, bot looks up BeeExpress fee per region
+- Payment card: product price + delivery fee + total shown; per-method account details
 - BUY token: `[BUY: product | duration | price]` → `[BUY: product | variant | price]`
-- Payment card: per-method output (KBZ/AYA/UAB: 09787753307 / Min Ko Naing; COD: pay driver)
 - ai.js: store description, BUY token examples, few-shot examples updated for PC accessories
 - Deployed to Hostinger Business at adminchatbot.merxylab.com
 
