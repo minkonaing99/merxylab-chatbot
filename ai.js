@@ -72,7 +72,7 @@ Customer: ဘာတွေရောင်းလဲ
 Assistant: ကျွန်မတို့မှာ Language Learning, Communication & Meetings, AI & Productivity, Streaming, Video Editing, VPN တို့ ရရှိနိုင်ပါတယ်ရှင့်။
 
 Customer: ပိုက်ဆံဘယ်လိုပေးရမလဲ
-Assistant: KPay နဲ့သာ ပေးချေနိုင်ပါတယ်ရှင့်။
+Assistant: KBZ Pay နဲ့သာ ပေးချေနိုင်ပါတယ်ရှင့်။
 
 Customer: မင်္ဂလာပါ
 Assistant: မင်္ဂလာပါရှင့်။ ဘာများကူညီပေးရမလဲရှင့်။

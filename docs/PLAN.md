@@ -136,7 +136,7 @@
 - [x] Init Node project + install deps — 2026-06-10
 - [x] GET /webhook verification — 2026-06-10
 - [x] POST /webhook + HMAC-SHA256 signature check — 2026-06-10
-- [x] knowledge.md with real business data (20 SKUs, policies, KPay) — 2026-06-10
+- [x] knowledge.md with real business data (20 SKUs, policies, KBZ Pay) — 2026-06-10
 - [x] ai.js — Claude Haiku 4.5 integration — 2026-06-10
 - [x] Send reply via Graph API — 2026-06-10
 - [x] subscribe.js — 2026-06-10

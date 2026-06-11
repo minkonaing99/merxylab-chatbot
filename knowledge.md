@@ -158,9 +158,9 @@ Price: Contact us — send a message and admin will give a quote.
 
 ## Ordering & Payment
 
-- Payment method: KPay only (no cash on delivery)
-- KPay number: 09787753307
-- KPay account name: Min Ko Naing
+- Payment method: KBZ Pay only (no cash on delivery)
+- KBZ Pay number: 09787753307
+- KBZ Pay account name: Min Ko Naing
 - After paying: send payment screenshot in this chat so admin can process the order
 - Orders accepted 24 hours a day, 7 days a week
 

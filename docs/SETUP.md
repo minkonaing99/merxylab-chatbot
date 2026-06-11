@@ -197,7 +197,7 @@ No automated test suite in MVP. Manual testing sequence:
 - Burmese tone: female voice (ကျမတို့), ပါ particle, ရှင့် ending rule
 - Reply length cap: 300 chars in prompt, 1900 char hard truncation
 - Product categories in Burmese in knowledge.md
-- KPay updated to Min Ko Naing / 09787753307
+- KBZ Pay updated to Min Ko Naing / 09787753307
 
 #### Changed
 
