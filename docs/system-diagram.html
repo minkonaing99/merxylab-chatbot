@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MerxyLab Chatbot — System Flow</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0f0f0f; color: #fff; padding: 24px; line-height: 1.4;
+  }
+  header { max-width: 1100px; margin: 0 auto 20px; }
+  header h1 { font-size: 24px; font-weight: 700; }
+  header p { color: #888; font-size: 14px; margin-top: 6px; max-width: 760px; }
+  .legend {
+    max-width: 1100px; margin: 0 auto 24px; display: flex; flex-wrap: wrap;
+    gap: 14px; font-size: 12px; color: #ccc;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; border: 2px solid; }
+  .container {
+    max-width: 1100px; margin: 0 auto; background: #161616; border-radius: 12px;
+    padding: 28px; position: relative;
+  }
+  svg#wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .stage { position: relative; z-index: 1; margin-bottom: 26px; }
+  .stage-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 10px; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .node {
+    min-width: 170px; max-width: 240px; flex: 1 1 170px; border: 2px solid;
+    border-radius: 12px; padding: 16px; cursor: pointer; transition: all .18s ease;
+    background: #1a1a1a;
+  }
+  .node:hover { transform: scale(1.05); }
+  .node .icon { font-size: 20px; }
+  .node .label { font-weight: 700; font-size: 14px; margin-top: 6px; }
+  .node .sub { font-size: 12px; color: #9a9a9a; margin-top: 4px; }
+  .node.dim { opacity: .25; }
+  .node.hi { box-shadow: 0 0 0 2px currentColor, 0 0 22px -4px currentColor; }
+  .t-trigger { border-color: #3B82F6; color: #3B82F6; background: #1e3a5f; }
+  .t-proc    { border-color: #10B981; color: #10B981; background: #1a3d2e; }
+  .t-tool    { border-color: #F59E0B; color: #F59E0B; background: #3d2e1a; }
+  .t-out     { border-color: #EF4444; color: #EF4444; background: #3d1a1a; }
+  .t-store   { border-color: #6366F1; color: #6366F1; background: #1a1a2e; }
+  .t-dec     { border-color: #A855F7; color: #A855F7; background: #2e1a3d; }
+  .node .label, .node .sub { color: #fff; }
+  .hint { max-width: 1100px; margin: 14px auto 0; color: #666; font-size: 12px; text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>MerxyLab Facebook Chatbot — System Flow</h1>
+  <p>Auto-answers Messenger customers with facts from knowledge.md (never invents prices), runs a guided purchase flow, and hands off to a human admin via Telegram when needed. Click any node to trace its connections.</p>
+</header>
+<div class="legend">
+  <span><span class="swatch" style="border-color:#3B82F6"></span>Triggers</span>
+  <span><span class="swatch" style="border-color:#10B981"></span>Processing</span>
+  <span><span class="swatch" style="border-color:#F59E0B"></span>Tools / Services</span>
+  <span><span class="swatch" style="border-color:#EF4444"></span>Outputs</span>
+  <span><span class="swatch" style="border-color:#6366F1"></span>Data Stores</span>
+  <span><span class="swatch" style="border-color:#A855F7"></span>Decisions</span>
+</div>
+
+<div class="container" id="container">
+  <svg id="wires"></svg>
+
+  <div class="stage">
+    <div class="stage-label">Entry</div>
+    <div class="row">
+      <div class="node t-trigger" id="n_msg" data-to="n_verify">
+        <div class="icon">💬</div><div class="label">Customer Message</div>
+        <div class="sub">Meta POSTs event to /webhook</div>
+      </div>
+      <div class="node t-trigger" id="n_admin_tg" data-to="n_clear">
+        <div class="icon">🛠️</div><div class="label">Admin /on PSID</div>
+        <div class="sub">Telegram command to re-enable bot</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-label">Gate</div>
+    <div class="row">
+      <div class="node t-dec" id="n_verify" data-to="n_dedupe">
+        <div class="icon">🔐</div><div class="label">Verify Signature</div>
+        <div class="sub">HMAC-SHA256 check → 403 if invalid, else 200 now</div>
+      </div>
+      <div class="node t-proc" id="n_dedupe" data-to="n_cooldown">
+        <div class="icon">🧹</div><div class="label">Dedupe + Echo</div>
+        <div class="sub">Drop repeats; echo = admin took over → end convo</div>
+      </div>
+      <div class="node t-dec" id="n_cooldown" data-to="n_rate,n_store_redis">
+        <div class="icon">⏳</div><div class="label">Cooldown?</div>
+        <div class="sub">If waiting for admin, reply once and stop</div>
+      </div>
+      <div class="node t-dec" id="n_rate" data-to="n_filter,n_alert">
+        <div class="icon">📊</div><div class="label">Rate Limit?</div>
+        <div class="sub">&gt;20 msgs/day → alert admin, stop</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-label">Fast Path (no AI)</div>
+    <div class="row">
+      <div class="node t-dec" id="n_filter" data-to="n_greet,n_adminreq,n_attach,n_repeat,n_route">
+        <div class="icon">🌐</div><div class="label">Language / Type</div>
+        <div class="sub">Burmese+English only; text vs photo</div>
+      </div>
+      <div class="node t-out" id="n_greet" data-to="">
+        <div class="icon">👋</div><div class="label">Greeting Reply</div>
+        <div class="sub">Hardcoded hello, skip AI</div>
+      </div>
+      <div class="node t-out" id="n_adminreq" data-to="">
+        <div class="icon">🙋</div><div class="label">Admin Request Reply</div>
+        <div class="sub">"Admin will answer shortly"</div>
+      </div>
+      <div class="node t-out" id="n_attach" data-to="n_alert">
+        <div class="icon">📷</div><div class="label">Photo Reply</div>
+        <div class="sub">Ack photo, alert admin</div>
+      </div>
+      <div class="node t-out" id="n_repeat" data-to="">
+        <div class="icon">🔁</div><div class="label">Repeat Reply</div>
+        <div class="sub">"Already answered above"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-label">Core Logic</div>
+    <div class="row">
+      <div class="node t-dec" id="n_route" data-to="n_flow,n_ai">
+        <div class="icon">🔀</div><div class="label">Purchase Flow Active?</div>
+        <div class="sub">In-order state vs new question</div>
+      </div>
+      <div class="node t-proc" id="n_flow" data-to="n_region,n_store_addr,n_paycard">
+        <div class="icon">🛒</div><div class="label">Purchase State Machine</div>
+        <div class="sub">confirm → address → payment</div>
+      </div>
+      <div class="node t-tool" id="n_ai" data-to="n_buy,n_reply">
+        <div class="icon">🤖</div><div class="label">Claude Haiku 4.5</div>
+        <div class="sub">Grounded reply from knowledge.md</div>
+      </div>
+      <div class="node t-store" id="n_kb" data-to="n_ai">
+        <div class="icon">📚</div><div class="label">knowledge.md</div>
+        <div class="sub">Prices, products, policies (system prompt)</div>
+      </div>
+      <div class="node t-dec" id="n_buy" data-to="n_flow">
+        <div class="icon">🏷️</div><div class="label">[BUY] token?</div>
+        <div class="sub">AI purchase intent → start flow</div>
+      </div>
+      <div class="node t-tool" id="n_region" data-to="n_paycard">
+        <div class="icon">📍</div><div class="label">Detect Region</div>
+        <div class="sub">Claude maps address → delivery fee</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-label">Outputs + State</div>
+    <div class="row">
+      <div class="node t-out" id="n_reply" data-to="n_store_hist">
+        <div class="icon">✉️</div><div class="label">Send Reply</div>
+        <div class="sub">Messenger Send API</div>
+      </div>
+      <div class="node t-out" id="n_paycard" data-to="n_store_addr">
+        <div class="icon">🧾</div><div class="label">Payment Card</div>
+        <div class="sub">Order total + pay instructions</div>
+      </div>
+      <div class="node t-tool" id="n_alert" data-to="n_store_redis">
+        <div class="icon">📨</div><div class="label">Telegram Alert</div>
+        <div class="sub">AI summary to admin (photo/rate/end)</div>
+      </div>
+      <div class="node t-proc" id="n_end" data-to="n_alert,n_store_redis">
+        <div class="icon">🏁</div><div class="label">End Conversation</div>
+        <div class="sub">Inactivity 30min / takeover → summary</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-label">Stores</div>
+    <div class="row">
+      <div class="node t-store" id="n_store_hist" data-to="n_ai">
+        <div class="icon">🧠</div><div class="label">In-Memory State</div>
+        <div class="sub">History, transcript, timers (daily reset)</div>
+      </div>
+      <div class="node t-store" id="n_store_addr" data-to="">
+        <div class="icon">🏠</div><div class="label">Saved Address</div>
+        <div class="sub">Pre-fill on repeat orders</div>
+      </div>
+      <div class="node t-store" id="n_store_redis" data-to="">
+        <div class="icon">🗄️</div><div class="label">Upstash Redis</div>
+        <div class="sub">Cooldown + notified flags (25h TTL)</div>
+      </div>
+      <div class="node t-proc" id="n_clear" data-to="n_store_redis">
+        <div class="icon">🔓</div><div class="label">Clear Cooldown</div>
+        <div class="sub">Admin re-enables bot for PSID</div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="hint">Click a node to highlight its flow. Click empty space to reset.</p>
+
+<script>
+const wires = document.getElementById('wires');
+const container = document.getElementById('container');
+const nodes = [...document.querySelectorAll('.node')];
+
+function colorOf(el){ return getComputedStyle(el).borderColor; }
+
+function edges(){
+  const list = [];
+  nodes.forEach(n => {
+    const to = n.dataset.to;
+    if(!to) return;
+    to.split(',').filter(Boolean).forEach(id => {
+      const t = document.getElementById(id);
+      if(t) list.push([n, t]);
+    });
+  });
+  return list;
+}
+
+function draw(){
+  const cb = container.getBoundingClientRect();
+  wires.setAttribute('viewBox', `0 0 ${cb.width} ${cb.height}`);
+  let defs = '<defs>';
+  const seen = new Set();
+  const paths = [];
+  edges().forEach(([a,b], i) => {
+    const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+    const x1 = ra.left - cb.left + ra.width/2, y1 = ra.bottom - cb.top;
+    const x2 = rb.left - cb.left + rb.width/2, y2 = rb.top - cb.top;
+    const col = colorOf(a);
+    const key = col.replace(/[^0-9]/g,'');
+    if(!seen.has(key)){
+      seen.add(key);
+      defs += `<marker id="m${key}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="${col}"/></marker>`;
+    }
+    const my = (y1+y2)/2;
+    const d = `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`;
+    paths.push(`<path class="wire" data-a="${a.id}" data-b="${b.id}" d="${d}" fill="none" stroke="${col}" stroke-opacity="0.35" stroke-width="1.6" marker-end="url(#m${key})"/>`);
+  });
+  defs += '</defs>';
+  wires.innerHTML = defs + paths.join('');
+}
+
+function reset(){
+  nodes.forEach(n => n.classList.remove('dim','hi'));
+  wires.querySelectorAll('.wire').forEach(w => { w.setAttribute('stroke-opacity','0.35'); w.setAttribute('stroke-width','1.6'); });
+}
+
+function highlight(node){
+  const linked = new Set([node.id]);
+  edges().forEach(([a,b]) => {
+    if(a.id === node.id) linked.add(b.id);
+    if(b.id === node.id) linked.add(a.id);
+  });
+  nodes.forEach(n => {
+    n.classList.toggle('dim', !linked.has(n.id));
+    n.classList.toggle('hi', n.id === node.id);
+  });
+  wires.querySelectorAll('.wire').forEach(w => {
+    const on = w.dataset.a === node.id || w.dataset.b === node.id;
+    w.setAttribute('stroke-opacity', on ? '0.95' : '0.06');
+    w.setAttribute('stroke-width', on ? '2.6' : '1.2');
+  });
+}
+
+nodes.forEach(n => n.addEventListener('click', e => { e.stopPropagation(); highlight(n); }));
+document.body.addEventListener('click', reset);
+window.addEventListener('resize', () => { draw(); reset(); });
+window.addEventListener('load', draw);
+draw();
+</script>
+</body>
+</html>
