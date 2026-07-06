@@ -1,6 +1,6 @@
 {
   "name": "merxylab-chatbot",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Facebook Page AI chatbot for MerxyLab digital subscription reseller",
   "main": "server.js",
   "scripts": {
