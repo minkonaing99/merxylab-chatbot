@@ -120,6 +120,23 @@ async function generateReply(
   }
 }
 
+async function classifyConfirmation(text) {
+  try {
+    const response = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 5,
+      system: 'A customer was asked a yes/no question (confirm a purchase, or "anything else?"). Classify their reply as confirming (yes), declining (no), or neither/unrelated (unclear). The reply may be in Burmese or English. Reply with ONLY one word: yes, no, or unclear.',
+      messages: [{ role: 'user', content: text }]
+    });
+    const r = response.content[0].text.trim().toLowerCase();
+    if (r.startsWith('yes')) return 'yes';
+    if (r.startsWith('no')) return 'no';
+    return 'unclear';
+  } catch {
+    return 'unclear';
+  }
+}
+
 async function detectRegion(address, regionNames) {
   try {
     const response = await client.messages.create({
@@ -137,4 +154,4 @@ async function detectRegion(address, regionNames) {
   }
 }
 
-module.exports = { generateReply, detectRegion };
+module.exports = { generateReply, detectRegion, classifyConfirmation };
